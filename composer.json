@@ -1,0 +1,7 @@
+{
+	"name": "jan-swiecki/simple-annotations",
+	"require":
+	{
+		"php": ">=5.3.*"
+	}
+}
