@@ -14,6 +14,7 @@ You need [PHPUnit](https://github.com/sebastianbergmann/phpunit/). After you get
 
     > git clone https://github.com/jan-swiecki/php-simple-annotations
     > cd php-simple-annotations
+    > composer install
     > phpunit
 
 ## API
