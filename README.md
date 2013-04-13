@@ -19,8 +19,6 @@ You need [PHPUnit](https://github.com/sebastianbergmann/phpunit/). After you get
 
 ## API
 
-DocBlock variable names does not matter. DocBlock Reader converts type of values basing on the context (see examples).
-
 * `$reader = new \DocBlockReader\Reader(String $className, String $methodName)`
 
  Initialize DocBlock Reader on `$className::$methodName`.
@@ -56,6 +54,8 @@ DocBlock variable names does not matter. DocBlock Reader converts type of values
 ## Examples
 
 Examples based on ReaderTest.php.
+
+Note: DocBlock Reader converts type of values basing on the context (see below).
 
 ### Type conversion example
 
