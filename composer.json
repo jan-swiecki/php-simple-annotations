@@ -5,11 +5,13 @@
 	"keywords": ["annotation", "docblock", "parser"],
 	"license": "MIT",
 	"authors":
-	{
-		"name": "Jan Święcki",
-		"email": "jan.swiecki@gmail.com",
-		"role": "Developer"
-	},
+	[
+		{
+			"name": "Jan Święcki",
+			"email": "jan.swiecki@gmail.com",
+			"role": "Developer"
+		}
+	],
 	"require":
 	{
 		"php": ">=5.3.0"
