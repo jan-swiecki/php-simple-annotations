@@ -8,6 +8,14 @@ Library is on [packagist](https://packagist.org/packages/jan-swiecki/simple-anno
 
 If you refuse to use composer then instead of `include_once "vendor/autoload.php"` use `include_once "src/DocBlockReader/Reader.php"`.
 
+## Test
+
+You need [PHPUnit](https://github.com/sebastianbergmann/phpunit/). After you get it run:
+
+    > git clone https://github.com/jan-swiecki/php-simple-annotations
+    > cd php-simple-annotations
+    > phpunit
+
 ## API
 
 DocBlock variable names does not matter. DocBlock Reader converts type of values basing on the context (see examples).
