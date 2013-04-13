@@ -1,4 +1,4 @@
-# PHP Simple Annotations 0.1.2
+# PHP Simple Annotations
 
 ## Installation
 
