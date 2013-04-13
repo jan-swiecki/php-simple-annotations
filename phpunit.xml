@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="tests/bootstrap.php">
+    <testsuites>
+        <testsuite name="Simple Annotations Test Suite">
+            <directory>tests/DocBlockReader/</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src/DocBlockReader/</directory>
+        </whitelist>
+    </filter>
+</phpunit>
