@@ -18,9 +18,7 @@ class Reader
 	{
 		$reflection = new \ReflectionMethod($class, $method);
 		$this->rawDocBlock = $reflection->getDocComment();
-
 		$this->parameters = array();
-		// $this->parse();
 	}
 
 	private function parseSingle($key)

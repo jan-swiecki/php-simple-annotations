@@ -54,8 +54,6 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame(NULL, $reader->getParameter('non-existent'));
 	}
 
-
-
 	/**
 	 * @number 1
 	 * @string "123"
@@ -126,9 +124,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 		$postParam = $reader->getParameter("postParam");
 
 		$this->assertNotEmpty($postParam);
-
 	}
-
 
 	/**
 	 * @allowedRequest ["ajax", "post"]
