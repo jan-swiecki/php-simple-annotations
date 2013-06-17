@@ -16,7 +16,7 @@ class Reader
 
 	public function __construct($class, $method, $reflectionClass = 'ReflectionMethod')
 	{
-	        $reflectionClass = '\\' . $reflectionClass;
+	    $reflectionClass = '\\' . $reflectionClass;
 		$reflection = new $reflectionClass($class, $method);
 		$this->rawDocBlock = $reflection->getDocComment();
 		$this->parameters = array();
