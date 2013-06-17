@@ -14,9 +14,10 @@ class Reader
 	private $endPattern = "[ ]*(?:@|\r\n|\n)";
 	private $parsedAll = FALSE;
 
-	public function __construct($class, $method)
+	public function __construct($class, $method, $reflectionClass = 'ReflectionMethod')
 	{
-		$reflection = new \ReflectionMethod($class, $method);
+	    $reflectionClass = '\\' . $reflectionClass;
+		$reflection = new $reflectionClass($class, $method);
 		$this->rawDocBlock = $reflection->getDocComment();
 		$this->parameters = array();
 	}
