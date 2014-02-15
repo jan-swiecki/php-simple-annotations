@@ -22,7 +22,7 @@ class Reader
 		// get reflection from class or class/method
 		// (depends on constructor arguments)
 		if($count === 0) {
-			throw new Exception("No zero argument constructor allowed");
+			throw new \Exception("No zero argument constructor allowed");
 		} else if($count === 1) {
 			$reflection = new \ReflectionClass($arguments[0]);
 		} else {
