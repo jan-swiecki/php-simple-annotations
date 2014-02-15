@@ -19,9 +19,13 @@ You need [PHPUnit](https://github.com/sebastianbergmann/phpunit/). After you get
 
 ## API
 
+* `$reader = new \DocBlockReader\Reader(String $className)`
+
+ Initialize DocBlock Reader on class `$className`
+
 * `$reader = new \DocBlockReader\Reader(String $className, String $methodName)`
 
- Initialize DocBlock Reader on `$className::$methodName`.
+ Initialize DocBlock Reader on method `$className::$methodName`
 
 * `$reader->getParameter(String $key)`
 

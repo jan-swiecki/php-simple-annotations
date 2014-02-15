@@ -2,6 +2,24 @@
 
 namespace DocBlockReader;
 
+/**
+ * @number 1
+ * @string "123"
+ * @string2 abc
+ * @array ["a", "b"]
+ * @object {"x": "y"}
+ * @nested {"x": {"y": "z"}}
+ * @nestedArray {"x": {"y": ["z", "p"]}}
+ *
+ * @trueVar
+ * @null-var null
+ *
+ * @booleanTrue true
+ * @booleanTrue2 tRuE
+ * @booleanFalse false
+ * @booleanNull null
+ * 
+ */
 class ReaderTest extends \PHPUnit_Framework_TestCase
 {
 	public function testParserOne()
@@ -38,6 +56,42 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame(TRUE, $parameters['booleanTrue2']);
 		$this->assertSame(FALSE, $parameters['booleanFalse']);
 		$this->assertSame(NULL, $parameters['booleanNull']);
+	}
+
+	public function testParserOneFromClass()
+	{
+		$reader = new Reader($this);
+		$parameters = $reader->getParameters();
+
+		$this->assertNotEmpty($parameters);
+
+		$this->assertArrayHasKey('number', $parameters);
+		$this->assertArrayHasKey('string', $parameters);
+		$this->assertArrayHasKey('array', $parameters);
+		$this->assertArrayHasKey('object', $parameters);
+		$this->assertArrayHasKey('nested', $parameters);
+		$this->assertArrayHasKey('nestedArray', $parameters);
+		$this->assertArrayHasKey('trueVar', $parameters);
+		$this->assertArrayHasKey('null-var', $parameters);
+		$this->assertArrayHasKey('booleanTrue', $parameters);
+		$this->assertArrayHasKey('booleanFalse', $parameters);
+		$this->assertArrayHasKey('booleanNull', $parameters);
+		$this->assertArrayNotHasKey('non_existent_key', $parameters);
+
+		$this->assertSame(1, $parameters['number']);
+		$this->assertSame("123", $parameters['string']);
+		$this->assertSame("abc", $parameters['string2']);
+		$this->assertSame(array("a", "b"), $parameters['array']);
+		$this->assertSame(array("x" => "y"), $parameters['object']);
+		$this->assertSame(array("x" => array("y" => "z")), $parameters['nested']);
+		$this->assertSame(array("x" => array("y" => array("z", "p"))), $parameters['nestedArray']);
+		$this->assertSame(TRUE, $parameters['trueVar']);
+		$this->assertSame(NULL, $parameters['null-var']);
+
+		$this->assertSame(TRUE, $parameters['booleanTrue']);
+		$this->assertSame(TRUE, $parameters['booleanTrue2']);
+		$this->assertSame(FALSE, $parameters['booleanFalse']);
+		$this->assertSame(NULL, $parameters['booleanNull']);		
 	}
 
 	public function testParserTwo()

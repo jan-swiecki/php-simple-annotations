@@ -14,9 +14,21 @@ class Reader
 	private $endPattern = "[ ]*(?:@|\r\n|\n)";
 	private $parsedAll = FALSE;
 
-	public function __construct($class, $method)
+	public function __construct()
 	{
-		$reflection = new \ReflectionMethod($class, $method);
+		$arguments = func_get_args();
+		$count = count($arguments);
+
+		// get reflection from class or class/method
+		// (depends on constructor arguments)
+		if($count === 0) {
+			throw new Exception("No zero argument constructor allowed");
+		} else if($count === 1) {
+			$reflection = new \ReflectionClass($arguments[0]);
+		} else {
+			$reflection = new \ReflectionMethod($arguments[0], $arguments[1]);
+		}
+
 		$this->rawDocBlock = $reflection->getDocComment();
 		$this->parameters = array();
 	}

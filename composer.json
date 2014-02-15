@@ -2,7 +2,7 @@
 	"name": "jan-swiecki/simple-annotations",
 	"description": "Simple annotation parser",
 	"homepage": "https://github.com/jan-swiecki/php-simple-annotations",
-	"keywords": ["annotation", "docblock", "parser"],
+	"keywords": ["annotations", "annotation", "docblock", "parser"],
 	"license": "MIT",
 	"authors":
 	[
