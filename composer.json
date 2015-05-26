@@ -1,10 +1,15 @@
 {
-  "name": "jan-swiecki/simple-annotations",
+  "name": "zonuexe/simple-annotations",
   "description": "Simple annotation parser",
-  "homepage": "https://github.com/jan-swiecki/php-simple-annotations",
+  "homepage": "https://github.com/zonuexe/php-simple-annotations",
   "keywords": ["annotations", "annotation", "docblock", "parser"],
   "license": "MIT",
   "authors": [
+    {
+      "name": "USAMI Kenta",
+      "email": "tadsan@zonu.me",
+      "role": "Developer"
+    },
     {
       "name": "Jan Święcki",
       "email": "jan.swiecki@gmail.com",
