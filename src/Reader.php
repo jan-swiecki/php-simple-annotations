@@ -10,8 +10,8 @@ class Reader
 {
 	private $rawDocBlock;
 	private $parameters;
-	private $keyPattern = "[A-z0-9\_\-]+";
-	private $endPattern = "[ ]*(?:@|\r\n|\n)";
+	const keyPattern = '[A-z0-9\_\-]+';
+	const endPattern = "[ ]*(?:@|\r\n|\n)";
 	private $parsedAll = FALSE;
 
 	public function __construct()
@@ -41,13 +41,13 @@ class Reader
 		}
 		else
 		{
-			if(preg_match("/@".preg_quote($key).$this->endPattern."/", $this->rawDocBlock, $match))
+			if(preg_match("/@".preg_quote($key).self::endPattern."/", $this->rawDocBlock, $match))
 			{
 				return TRUE;
 			}
 			else
 			{
-				preg_match_all("/@".preg_quote($key)." (.*)".$this->endPattern."/U", $this->rawDocBlock, $matches);
+				preg_match_all("/@".preg_quote($key)." (.*)".self::endPattern."/U", $this->rawDocBlock, $matches);
 				$size = sizeof($matches[1]);
 
 				// not found
@@ -77,13 +77,13 @@ class Reader
 
 	private function parse()
 	{
-		$pattern = "/@(?=(.*)".$this->endPattern.")/U";
+		$pattern = "/@(?=(.*)".self::endPattern.")/U";
 
 		preg_match_all($pattern, $this->rawDocBlock, $matches);
 
 		foreach($matches[1] as $rawParameter)
 		{
-			if(preg_match("/^(".$this->keyPattern.") (.*)$/", $rawParameter, $match))
+			if(preg_match("/^(".self::keyPattern.") (.*)$/", $rawParameter, $match))
 			{
 				if(isset($this->parameters[$match[1]]))
 				{
@@ -94,7 +94,7 @@ class Reader
 					$this->parameters[$match[1]] = $this->parseValue($match[2]);
 				}
 			}
-			else if(preg_match("/^".$this->keyPattern."$/", $rawParameter, $match))
+			else if(preg_match("/^".self::keyPattern."$/", $rawParameter, $match))
 			{
 				$this->parameters[$rawParameter] = TRUE;
 			}
