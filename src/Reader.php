@@ -36,7 +36,7 @@ class Reader
         // get reflection from class or class/method
         // (depends on constructor arguments)
         if (empty($class_or_reflector)) {
-            throw new \Exception("No zero argument constructor allowed");
+            throw new \Exception('No zero argument constructor allowed');
         }
 
         if ($method === null) {
@@ -58,10 +58,10 @@ class Reader
             return $this->parameters[$key];
         }
 
-        if (preg_match("/@".preg_quote($key).self::endPattern."/", $this->rawDocBlock, $match)) {
+        if (preg_match('/@'.preg_quote($key).self::endPattern.'/', $this->rawDocBlock, $match)) {
             return true;
         }
-        preg_match_all("/@".preg_quote($key)." (.*)".self::endPattern."/U", $this->rawDocBlock, $matches);
+        preg_match_all('/@'.preg_quote($key).' (.*)'.self::endPattern.'/U', $this->rawDocBlock, $matches);
         $size = count($matches[1]);
 
         // not found
@@ -89,13 +89,13 @@ class Reader
         preg_match_all($pattern, $this->rawDocBlock, $matches);
 
         foreach($matches[1] as $rawParameter) {
-            if(preg_match("/^(".self::keyPattern.") (.*)$/", $rawParameter, $match)) {
+            if(preg_match('/^('.self::keyPattern.') (.*)$/', $rawParameter, $match)) {
                 if(isset($this->parameters[$match[1]])) {
                     $this->parameters[$match[1]] = array_merge((array)$this->parameters[$match[1]], (array)$match[2]);
                 } else {
                     $this->parameters[$match[1]] = $this->parseValue($match[2]);
                 }
-            } elseif(preg_match("/^".self::keyPattern."$/", $rawParameter, $match)) {
+            } elseif(preg_match('/^'.self::keyPattern.'$/', $rawParameter, $match)) {
                 $this->parameters[$rawParameter] = true;
             } else {
                 $this->parameters[$rawParameter] = null;
@@ -107,8 +107,8 @@ class Reader
     {
         $declarations = (array)$this->getParameter($name);
 
-        foreach($declarations as &$declaration) {
-            $declaration = $this->parseVariableDeclaration($declaration, $name);
+        foreach($declarations as $i => $declaration) {
+            $declarations[$i] = $this->parseVariableDeclaration($declaration, $name);
         }
 
         return $declarations;
@@ -116,9 +116,8 @@ class Reader
 
     public function parseVariableDeclaration($declaration, $name)
     {
-        $type = gettype($declaration);
-
-        if ($type !== 'string') {
+        if (!is_string($declaration)) {
+            $type = gettype($declaration);
             $message = "Raw declaration must be string, $type given. Key='$name'.";
             throw new \InvalidArgumentException($message);
         }
@@ -128,10 +127,10 @@ class Reader
             throw new \InvalidArgumentException($message);
         }
 
-        $declaration = explode(" ", $declaration);
+        $declaration = explode(' ', $declaration);
         if(count($declaration) === 1) {
             // string is default type
-            array_unshift($declaration, "string");
+            array_unshift($declaration, 'string');
         }
 
         // take first two as type and name
