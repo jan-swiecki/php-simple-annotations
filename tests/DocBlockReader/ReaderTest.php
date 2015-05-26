@@ -15,7 +15,7 @@ namespace DocBlockReader;
  * @null-var null
  *
  * @booleanTrue true
- * @booleanTrue2 tRuE
+ * @invalidTrue tRuE
  * @booleanFalse false
  * @booleanNull null
  * 
@@ -38,6 +38,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 		$this->assertArrayHasKey('trueVar', $parameters);
 		$this->assertArrayHasKey('null-var', $parameters);
 		$this->assertArrayHasKey('booleanTrue', $parameters);
+		$this->assertArrayHasKey('invalidTrue', $parameters);
 		$this->assertArrayHasKey('booleanFalse', $parameters);
 		$this->assertArrayHasKey('booleanNull', $parameters);
 		$this->assertArrayNotHasKey('non_existent_key', $parameters);
@@ -53,7 +54,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame(NULL, $parameters['null-var']);
 
 		$this->assertSame(TRUE, $parameters['booleanTrue']);
-		$this->assertSame(TRUE, $parameters['booleanTrue2']);
+		$this->assertSame("tRuE", $parameters['invalidTrue']);
 		$this->assertSame(FALSE, $parameters['booleanFalse']);
 		$this->assertSame(NULL, $parameters['booleanNull']);
 	}
@@ -89,7 +90,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame(NULL, $parameters['null-var']);
 
 		$this->assertSame(TRUE, $parameters['booleanTrue']);
-		$this->assertSame(TRUE, $parameters['booleanTrue2']);
+		$this->assertSame("tRuE", $parameters['invalidTrue']);
 		$this->assertSame(FALSE, $parameters['booleanFalse']);
 		$this->assertSame(NULL, $parameters['booleanNull']);		
 	}
@@ -121,7 +122,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 	 * @null-var null
 	 *
 	 * @booleanTrue true
-	 * @booleanTrue2 tRuE
+	 * @invalidTrue tRuE
 	 * @booleanFalse false
 	 * @booleanNull null
 	 * 

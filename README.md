@@ -131,7 +131,7 @@ will print
   'var8' <font color='#888a85'>=&gt;</font> <small>boolean</small> <font color='#75507b'>true</font>
   'var9' <font color='#888a85'>=&gt;</font> <font color='#3465a4'>null</font>
   'var10' <font color='#888a85'>=&gt;</font> <small>boolean</small> <font color='#75507b'>true</font>
-  'var11' <font color='#888a85'>=&gt;</font> <small>boolean</small> <font color='#75507b'>true</font>
+  'var11' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'tRuE'</font> <i>(length=4)</i>
   'var12' <font color='#888a85'>=&gt;</font> <small>boolean</small> <font color='#75507b'>false</font>
   'var13' <font color='#888a85'>=&gt;</font> <font color='#3465a4'>null</font>
 </pre>
