@@ -2,188 +2,172 @@
 
 namespace DocBlockReader;
 
-class ReaderException extends \Exception
-{
-}
-
 class Reader
 {
-	private $rawDocBlock;
-	private $parameters;
-	const keyPattern = '[A-z0-9\_\-]+';
-	const endPattern = "[ ]*(?:@|\r\n|\n)";
-	private $parsedAll = FALSE;
+    const keyPattern = '[A-z0-9\_\-]+';
+    const endPattern = "[ ]*(?:@|\r\n|\n)";
 
-	public function __construct()
-	{
-		$arguments = func_get_args();
-		$count = count($arguments);
+    /** @var string */
+    private $rawDocBlock;
 
-		// get reflection from class or class/method
-		// (depends on constructor arguments)
-		if($count === 0) {
-			throw new \Exception("No zero argument constructor allowed");
-		} else if($count === 1) {
-			$reflection = new \ReflectionClass($arguments[0]);
-		} else {
-			$reflection = new \ReflectionMethod($arguments[0], $arguments[1]);
-		}
+    /** @var mixed[] */
+    private $parameters = [];
 
-		$this->rawDocBlock = $reflection->getDocComment();
-		$this->parameters = array();
-	}
+    /** @var boolean */
+    private $parsedAll = false;
 
-	private function parseSingle($key)
-	{
-		if(isset($this->parameters[$key]))
-		{
-			return $this->parameters[$key];
-		}
-		else
-		{
-			if(preg_match("/@".preg_quote($key).self::endPattern."/", $this->rawDocBlock, $match))
-			{
-				return TRUE;
-			}
-			else
-			{
-				preg_match_all("/@".preg_quote($key)." (.*)".self::endPattern."/U", $this->rawDocBlock, $matches);
-				$size = sizeof($matches[1]);
+    /**
+     * @param string $doc_block
+     * @throws \Exception
+     */
+    public function __construct($doc_block)
+    {
+        $this->rawDocBlock = $doc_block;
+    }
 
-				// not found
-				if($size === 0)
-				{
-					return NULL;
-				}
-				// found one, save as scalar
-				elseif($size === 1)
-				{
-					return $this->parseValue($matches[1][0]);
-				}
-				// found many, save as array
-				else
-				{
-					$this->parameters[$key] = array();
-					foreach($matches[1] as $elem)
-					{
-						$this->parameters[$key][] = $this->parseValue($elem);
-					}
+    /**
+     * @param  \Reflector|string $class_or_reflector
+     * @param  string $method
+     * @return Reader
+     * @throws \Exception
+     */
+    public static function read($class_or_reflector, $method = null)
+    {
+        // get reflection from class or class/method
+        // (depends on constructor arguments)
+        if (empty($class_or_reflector)) {
+            throw new \Exception("No zero argument constructor allowed");
+        }
 
-					return $this->parameters[$key];
-				}
-			}
-		}
-	}
+        if ($method === null) {
+            if ($class_or_reflector instanceof \Reflector) {
+                $reflection = $class_or_reflector;
+            } else {
+                $reflection = new \ReflectionClass($class_or_reflector);
+            }
+        } else {
+            $reflection = new \ReflectionMethod($class_or_reflector, $method);
+        }
 
-	private function parse()
-	{
-		$pattern = "/@(?=(.*)".self::endPattern.")/U";
+        return new Reader($reflection->getDocComment());
+    }
 
-		preg_match_all($pattern, $this->rawDocBlock, $matches);
+    public function parseSingle($key)
+    {
+        if (isset($this->parameters[$key])) {
+            return $this->parameters[$key];
+        }
 
-		foreach($matches[1] as $rawParameter)
-		{
-			if(preg_match("/^(".self::keyPattern.") (.*)$/", $rawParameter, $match))
-			{
-				if(isset($this->parameters[$match[1]]))
-				{
-					$this->parameters[$match[1]] = array_merge((array)$this->parameters[$match[1]], (array)$match[2]);
-				}
-				else
-				{
-					$this->parameters[$match[1]] = $this->parseValue($match[2]);
-				}
-			}
-			else if(preg_match("/^".self::keyPattern."$/", $rawParameter, $match))
-			{
-				$this->parameters[$rawParameter] = TRUE;
-			}
-			else
-			{
-				$this->parameters[$rawParameter] = NULL;
-			}
-		}
-	}
+        if (preg_match("/@".preg_quote($key).self::endPattern."/", $this->rawDocBlock, $match)) {
+            return true;
+        }
+        preg_match_all("/@".preg_quote($key)." (.*)".self::endPattern."/U", $this->rawDocBlock, $matches);
+        $size = count($matches[1]);
 
-	public function getVariableDeclarations($name)
-	{
-		$declarations = (array)$this->getParameter($name);
+        // not found
+        if ($size === 0) {
+            return null;
+        }
+        // found one, save as scalar
+        elseif ($size === 1) {
+            return $this->parseValue($matches[1][0]);
+        }
 
-		foreach($declarations as &$declaration)
-		{
-			$declaration = $this->parseVariableDeclaration($declaration, $name);
-		}
+        // found many, save as array
+        $this->parameters[$key] = array();
+        foreach ($matches[1] as $elem) {
+            $this->parameters[$key][] = $this->parseValue($elem);
+        }
 
-		return $declarations;
-	}
+        return $this->parameters[$key];
+    }
 
-	private function parseVariableDeclaration($declaration, $name)
-	{
-		$type = gettype($declaration);
+    public function parse()
+    {
+        $pattern = "/@(?=(.*)".self::endPattern.")/U";
 
-		if($type !== 'string')
-		{
-			throw new \InvalidArgumentException(
-				"Raw declaration must be string, $type given. Key='$name'.");
-		}
+        preg_match_all($pattern, $this->rawDocBlock, $matches);
 
-		if(strlen($declaration) === 0)
-		{
-			throw new \InvalidArgumentException(
-				"Raw declaration cannot have zero length. Key='$name'.");
-		}
+        foreach($matches[1] as $rawParameter) {
+            if(preg_match("/^(".self::keyPattern.") (.*)$/", $rawParameter, $match)) {
+                if(isset($this->parameters[$match[1]])) {
+                    $this->parameters[$match[1]] = array_merge((array)$this->parameters[$match[1]], (array)$match[2]);
+                } else {
+                    $this->parameters[$match[1]] = $this->parseValue($match[2]);
+                }
+            } elseif(preg_match("/^".self::keyPattern."$/", $rawParameter, $match)) {
+                $this->parameters[$rawParameter] = true;
+            } else {
+                $this->parameters[$rawParameter] = null;
+            }
+        }
+    }
 
-		$declaration = explode(" ", $declaration);
-		if(sizeof($declaration) == 1)
-		{
-			// string is default type
-			array_unshift($declaration, "string");
-		}
+    public function getVariableDeclarations($name)
+    {
+        $declarations = (array)$this->getParameter($name);
 
-		// take first two as type and name
-		$declaration = array(
-			'type' => $declaration[0],
-			'name' => $declaration[1]
-		);
+        foreach($declarations as &$declaration) {
+            $declaration = $this->parseVariableDeclaration($declaration, $name);
+        }
 
-		return $declaration;
-	}
+        return $declarations;
+    }
 
-	private function parseValue($originalValue)
-	{
-		if($originalValue && $originalValue !== 'null')
-		{
-			// try to json decode, if cannot then store as string
-			if( ($json = json_decode($originalValue,TRUE)) === NULL)
-			{
-				$value = $originalValue;
-			}
-			else
-			{
-				$value = $json;
-			}
-		}
-		else
-		{
-			$value = NULL;
-		}
+    public function parseVariableDeclaration($declaration, $name)
+    {
+        $type = gettype($declaration);
 
-		return $value;
-	}
+        if ($type !== 'string') {
+            $message = "Raw declaration must be string, $type given. Key='$name'.";
+            throw new \InvalidArgumentException($message);
+        }
 
-	public function getParameters()
-	{
-		if(! $this->parsedAll)
-		{
-			$this->parse();
-			$this->parsedAll = TRUE;
-		}
+        if (strlen($declaration) === 0) {
+            $message = "Raw declaration cannot have zero length. Key='$name'.";
+            throw new \InvalidArgumentException($message);
+        }
 
-		return $this->parameters;
-	}
+        $declaration = explode(" ", $declaration);
+        if(count($declaration) === 1) {
+            // string is default type
+            array_unshift($declaration, "string");
+        }
 
-	public function getParameter($key)
-	{
-		return $this->parseSingle($key);
-	}
+        // take first two as type and name
+        $declaration = array(
+            'type' => $declaration[0],
+            'name' => $declaration[1],
+        );
+
+        return $declaration;
+    }
+
+    public function parseValue($originalValue)
+    {
+        if($originalValue && $originalValue !== 'null') {
+            // try to json decode, if cannot then store as string
+            $json = json_decode($originalValue, true);
+            $value = ($json === null) ? $originalValue : $json;
+        } else {
+            $value = null;
+        }
+
+        return $value;
+    }
+
+    public function getParameters()
+    {
+        if (!$this->parsedAll) {
+            $this->parse();
+            $this->parsedAll = true;
+        }
+
+        return $this->parameters;
+    }
+
+    public function getParameter($key)
+    {
+        return $this->parseSingle($key);
+    }
 }

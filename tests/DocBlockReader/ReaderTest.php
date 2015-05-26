@@ -24,7 +24,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 {
 	public function testParserOne()
 	{
-		$reader = new Reader($this, 'parserFixture');
+		$reader = Reader::read($this, 'parserFixture');
 		$parameters = $reader->getParameters();
 
 		$this->assertNotEmpty($parameters);
@@ -60,7 +60,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
 	public function testParserOneFromClass()
 	{
-		$reader = new Reader($this);
+		$reader = Reader::read($this);
 		$parameters = $reader->getParameters();
 
 		$this->assertNotEmpty($parameters);
@@ -96,7 +96,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
 	public function testParserTwo()
 	{
-		$reader = new Reader($this, 'parserFixture');
+		$reader = Reader::read($this, 'parserFixture');
 
 		$this->assertSame(1, $reader->getParameter('number'));
 		$this->assertSame("123", $reader->getParameter('string'));
@@ -132,7 +132,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
 	public function testParserEmpty()
 	{
-		$reader = new Reader($this, 'parserEmptyFixture');
+		$reader = Reader::read($this, 'parserEmptyFixture');
 		$parameters = $reader->getParameters();
 		$this->assertSame(array(), $parameters);
 	}
@@ -143,7 +143,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
 	public function testParserMulti()
 	{
-		$reader = new Reader($this, 'parserMultiFixture');
+		$reader = Reader::read($this, 'parserMultiFixture');
 		$parameters = $reader->getParameters();
 
 		$this->assertNotEmpty($parameters);
@@ -172,7 +172,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
 	public function testParserThree()
 	{
-		$reader = new Reader($this, 'fixtureThree');
+		$reader = Reader::read($this, 'fixtureThree');
 		// $allowedRequest = $reader->getParameter("allowedRequest");
 
 		$postParam = $reader->getParameter("postParam");
@@ -193,7 +193,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
 	public function testParserFour()
 	{
-		$reader = new Reader($this, 'fixtureFour');
+		$reader = Reader::read($this, 'fixtureFour');
 
 		$this->assertSame(TRUE, $reader->getParameter('get'));
 		$this->assertSame(TRUE, $reader->getParameter('post'));
@@ -203,7 +203,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
 	public function testParserFourBis()
 	{
-		$reader = new Reader($this, 'fixtureFour');
+		$reader = Reader::read($this, 'fixtureFour');
 
 		$parameters = $reader->getParameters();
 
@@ -232,8 +232,8 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
 	public function testFive()
 	{
-		$reader1 = new Reader($this, 'fixtureFive');
-		$reader2 = new Reader($this, 'fixtureFive');
+		$reader1 = Reader::read($this, 'fixtureFive');
+		$reader2 = Reader::read($this, 'fixtureFive');
 
 		$parameters1 = $reader1->getParameters();
 
@@ -254,7 +254,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
 	public function testVariableDeclarations()
 	{
-		$reader = new Reader($this, 'fixtureVariableDeclarations');
+		$reader = Reader::read($this, 'fixtureVariableDeclarations');
 		$declarations = $reader->getVariableDeclarations("param");
 		$this->assertNotEmpty($declarations);
 
@@ -278,7 +278,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testBadVariableDeclarations($methodName)
 	{
-		$reader = new Reader($this, $methodName);
+		$reader = Reader::read($this, $methodName);
 		$declarations = $reader->getVariableDeclarations("param");
 	}
 
