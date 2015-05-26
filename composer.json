@@ -1,26 +1,25 @@
 {
-	"name": "jan-swiecki/simple-annotations",
-	"description": "Simple annotation parser",
-	"homepage": "https://github.com/jan-swiecki/php-simple-annotations",
-	"keywords": ["annotations", "annotation", "docblock", "parser"],
-	"license": "MIT",
-	"authors":
-	[
-		{
-			"name": "Jan Święcki",
-			"email": "jan.swiecki@gmail.com",
-			"role": "Developer"
-		}
-	],
-	"require":
-	{
-		"php": ">=5.3.0"
-	},
-	"autoload":
-	{
-		"psr-0":
-		{
-			"DocBlockReader": "src/"
-		}
-	}
+  "name": "jan-swiecki/simple-annotations",
+  "description": "Simple annotation parser",
+  "homepage": "https://github.com/jan-swiecki/php-simple-annotations",
+  "keywords": ["annotations", "annotation", "docblock", "parser"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jan Święcki",
+      "email": "jan.swiecki@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">= 5.3.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.6.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "DocBlockReader\\": "src/"
+    }
+  }
 }
