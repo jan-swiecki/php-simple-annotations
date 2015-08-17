@@ -22,6 +22,45 @@ namespace DocBlockReader;
  */
 class ReaderTest extends \PHPUnit_Framework_TestCase
 {
+	/**
+	 * @number 1
+	 * @string "123"
+	 * @string2 abc
+	 * @array ["a", "b"]
+	 * @object {"x": "y"}
+	 * @nested {"x": {"y": "z"}}
+	 * @nestedArray {"x": {"y": ["z", "p"]}}
+	 *
+	 * @trueVar
+	 * @null-var null
+	 *
+	 * @booleanTrue true
+	 * @string3 tRuE
+	 * @booleanFalse false
+	 * @booleanNull null
+	 * 
+	 */
+	public $myVar = "test";
+
+	/**
+	 * @x 1
+	 * @y yes!
+	 */
+	private $myVar2;
+
+	public function testPropertyParsing() {
+		$reader = new Reader($this, 'myVar', 'property');
+		$this->commonTest($reader);
+	}
+
+	public function testPropertyParsing2() {
+		$reader = new Reader($this, 'myVar2', 'property');
+		$x = $reader->getParameter("x");
+		$y = $reader->getParameter("y");
+		$this->assertSame(1, $x);
+		$this->assertSame("yes!", $y);
+	}
+	
 	public function testParserOne()
 	{
 		$reader = new Reader($this, 'parserFixture');

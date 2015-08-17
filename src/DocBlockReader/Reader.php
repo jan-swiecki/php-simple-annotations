@@ -26,7 +26,13 @@ class Reader
 		} else if($count === 1) {
 			$reflection = new \ReflectionClass($arguments[0]);
 		} else {
-			$reflection = new \ReflectionMethod($arguments[0], $arguments[1]);
+			$type = $count === 3 ? $arguments[2] : "method";
+
+			if($type === "method") {
+				$reflection = new \ReflectionMethod($arguments[0], $arguments[1]);
+			} else if($type === "property") {
+				$reflection = new \ReflectionProperty($arguments[0], $arguments[1]);
+			}
 		}
 
 		$this->rawDocBlock = $reflection->getDocComment();

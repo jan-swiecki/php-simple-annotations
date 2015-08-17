@@ -17,15 +17,36 @@ You need [PHPUnit](https://github.com/sebastianbergmann/phpunit/). After you get
     > composer install
     > phpunit
 
-## API
+## Introduction
 
-* `$reader = new \DocBlockReader\Reader(String $className)`
+This library gives you the ability to extract and auto-parse DocBlock comment blocks.
 
- Initialize DocBlock Reader on class `$className`
+Example:
 
-* `$reader = new \DocBlockReader\Reader(String $className, String $methodName)`
+    class TestClass {
+      /**
+       * @x 1
+       * @y yes!
+       */
+      private $myVar;
+    }
 
- Initialize DocBlock Reader on method `$className::$methodName`
+    $reader = new \DocBlockReader\Reader('TestClass', 'myVar', 'property');
+    $x = $reader->getParameter("x"); // 1 (with number type)
+    $y = $reader->getParameter("y"); // "yes!" (with string type)
+
+So as you can see to do this you need to construct `Reader` object and target it at something. Then you extract data.
+
+You can point at classes, class methods and class properties.
+
+* Targeting class: `$reader = new \DocBlockReader\Reader(String $className)`
+* Targeting method or property: `$reader = new \DocBlockReader\Reader(String $className, String $name [, String $type = 'method'])`
+
+ This will initialize DocBlock Reader on method `$className::$name` or property `$className::$name`.
+
+ To choose method use only two arguments or provide third argument as `method` string value. To get property value put `property` string value in third argument.
+
+To extract parsed properties you have two methods:
 
 * `$reader->getParameter(String $key)`
 
@@ -45,15 +66,35 @@ You need [PHPUnit](https://github.com/sebastianbergmann/phpunit/). After you get
  }
  ```
 
- then `$reader->getParameter("awesomeVariable")` will return string `I am a string` (without quotes).
+ then
+
+ ```php
+ $reader = new \DocBlockReader\Reader('MyClass', 'fn');
+ $reader->getParameter("awesomeVariable")
+ ```
+
+ will return string `I am a string` (without quotes).
 
 * `$reader->getParameters()`
 
  returns array of all parameters (see examples below).
 
-* `$reader->getVariableDeclarations()`
+## API
 
- See last example.
+* Constructor `$reader = new \DocBlockReader\Reader(String $className [, String $name [, String $type = 'method'] ])`
+  
+  Creates `Reader` pointing at class, class method or class property - based on provided arguments (see Introduction).
+
+* `$reader->getParameter(String $key)`
+
+ Returns value of parameter `$key` extracted from DocBlock.
+
+* `$reader->getParameters()`
+
+ returns array of all parameters (see examples below).
+
+* `$reader->getVariableDeclarations()` - See last example below.
+
 
 ## Examples
 
