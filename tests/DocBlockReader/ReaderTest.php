@@ -15,7 +15,7 @@ namespace DocBlockReader;
  * @null-var null
  *
  * @booleanTrue true
- * @booleanTrue2 tRuE
+ * @string3 tRuE
  * @booleanFalse false
  * @booleanNull null
  * 
@@ -25,6 +25,10 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 	public function testParserOne()
 	{
 		$reader = new Reader($this, 'parserFixture');
+		$this->commonTest($reader);
+	}
+
+	public function commonTest($reader) {
 		$parameters = $reader->getParameters();
 
 		$this->assertNotEmpty($parameters);
@@ -53,7 +57,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame(NULL, $parameters['null-var']);
 
 		$this->assertSame(TRUE, $parameters['booleanTrue']);
-		$this->assertSame(TRUE, $parameters['booleanTrue2']);
+		$this->assertSame("tRuE", $parameters['string3']);
 		$this->assertSame(FALSE, $parameters['booleanFalse']);
 		$this->assertSame(NULL, $parameters['booleanNull']);
 	}
@@ -89,7 +93,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame(NULL, $parameters['null-var']);
 
 		$this->assertSame(TRUE, $parameters['booleanTrue']);
-		$this->assertSame(TRUE, $parameters['booleanTrue2']);
+		$this->assertSame("tRuE", $parameters['string3']);
 		$this->assertSame(FALSE, $parameters['booleanFalse']);
 		$this->assertSame(NULL, $parameters['booleanNull']);		
 	}
@@ -121,7 +125,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 	 * @null-var null
 	 *
 	 * @booleanTrue true
-	 * @booleanTrue2 tRuE
+	 * @string3 tRuE
 	 * @booleanFalse false
 	 * @booleanNull null
 	 * 
