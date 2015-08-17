@@ -91,13 +91,14 @@ class Reader
 		{
 			if(preg_match("/^(".$this->keyPattern.") (.*)$/", $rawParameter, $match))
 			{
+				$parsedValue = $this->parseValue($match[2]);
 				if(isset($this->parameters[$match[1]]))
 				{
-					$this->parameters[$match[1]] = array_merge((array)$this->parameters[$match[1]], (array)$match[2]);
+					$this->parameters[$match[1]] = array_merge((array)$this->parameters[$match[1]], (array)$parsedValue);
 				}
 				else
 				{
-					$this->parameters[$match[1]] = $this->parseValue($match[2]);
+					$this->parameters[$match[1]] = $parsedValue;
 				}
 			}
 			else if(preg_match("/^".$this->keyPattern."$/", $rawParameter, $match))

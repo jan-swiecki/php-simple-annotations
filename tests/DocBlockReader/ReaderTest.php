@@ -48,6 +48,12 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 	 */
 	private $myVar2;
 
+	/**
+	 * @Lalala ["somejsonarray", "2"]
+	 * @Lalala ["anotherjsonarray", "3"]
+	 */
+	public $issue2;
+
 	public function testPropertyParsing() {
 		$reader = new Reader($this, 'myVar', 'property');
 		$this->commonTest($reader);
@@ -59,6 +65,17 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 		$y = $reader->getParameter("y");
 		$this->assertSame(1, $x);
 		$this->assertSame("yes!", $y);
+	}
+
+	/**
+	 * Issue: https://github.com/jan-swiecki/php-simple-annotations/issues/2
+	 * Thanks to @KrekkieD (https://github.com/KrekkieD) for reporting this issue!
+	 */
+	public function testIssue2Problem() {
+		$reader = new Reader($this, 'issue2', 'property');
+		$Lalala = $reader->getParameters()["Lalala"];
+
+		$this->assertSame(array("somejsonarray", "2", "anotherjsonarray", "3"), $Lalala);
 	}
 	
 	public function testParserOne()
