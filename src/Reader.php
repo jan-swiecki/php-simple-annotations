@@ -26,6 +26,19 @@ class Reader
     }
 
     /**
+     * Reset the doc block content so the object is reusable
+     * 
+     * @param string $doc_block
+     * @return void
+     */
+    public function setDocBlockContent($doc_block){
+        $this->parameters = [];
+        $this->parsedAll = false;
+        
+        $this->rawDocBlock = $doc_block;
+    }
+
+    /**
      * @param  \Reflector|string $class_or_reflector
      * @param  string $method
      * @return Reader
