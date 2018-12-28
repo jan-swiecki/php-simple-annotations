@@ -2,3 +2,4 @@ composer.phar
 *.sublime-*
 test.php
 vendor
+.idea/*
