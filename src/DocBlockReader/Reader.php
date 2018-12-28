@@ -32,6 +32,8 @@ class Reader
 				$reflection = new \ReflectionMethod($arguments[0], $arguments[1]);
 			} else if($type === "property") {
 				$reflection = new \ReflectionProperty($arguments[0], $arguments[1]);
+			} else if($type === "constant") {
+				$reflection = new \ReflectionClassConstant($arguments[0], $arguments[1]);
 			}
 		}
 

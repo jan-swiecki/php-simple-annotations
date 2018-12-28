@@ -18,7 +18,7 @@ namespace DocBlockReader;
  * @string3 tRuE
  * @booleanFalse false
  * @booleanNull null
- * 
+ *
  */
 class ReaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -38,7 +38,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 	 * @string3 tRuE
 	 * @booleanFalse false
 	 * @booleanNull null
-	 * 
+	 *
 	 */
 	public $myVar = "test";
 
@@ -47,6 +47,32 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 	 * @y yes!
 	 */
 	private $myVar2;
+
+	/**
+	 * @number 1
+	 * @string "123"
+	 * @string2 abc
+	 * @array ["a", "b"]
+	 * @object {"x": "y"}
+	 * @nested {"x": {"y": "z"}}
+	 * @nestedArray {"x": {"y": ["z", "p"]}}
+	 *
+	 * @trueVar
+	 * @null-var null
+	 *
+	 * @booleanTrue true
+	 * @string3 tRuE
+	 * @booleanFalse false
+	 * @booleanNull null
+	 *
+	 */
+	const MYCONST = 1;
+
+	/**
+	 * @x 1
+	 * @y yes!
+	 */
+	const MYCONST2 = 2;
 
 	/**
 	 * @Lalala ["somejsonarray", "2"]
@@ -67,6 +93,19 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame("yes!", $y);
 	}
 
+	public function testConstantParsing() {
+		$reader = new Reader($this, 'MYCONST', 'constant');
+		$this->commonTest($reader);
+	}
+
+	public function testConstantParsing2() {
+		$reader = new Reader($this, 'MYCONST2', 'constant');
+		$x = $reader->getParameter("x");
+		$y = $reader->getParameter("y");
+		$this->assertSame(1, $x);
+		$this->assertSame("yes!", $y);
+	}
+
 	/**
 	 * Issue: https://github.com/jan-swiecki/php-simple-annotations/issues/2
 	 * Thanks to @KrekkieD (https://github.com/KrekkieD) for reporting this issue!
@@ -77,7 +116,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertSame(array("somejsonarray", "2", "anotherjsonarray", "3"), $Lalala);
 	}
-	
+
 	public function testParserOne()
 	{
 		$reader = new Reader($this, 'parserFixture');
@@ -151,7 +190,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame(TRUE, $parameters['booleanTrue']);
 		$this->assertSame("tRuE", $parameters['string3']);
 		$this->assertSame(FALSE, $parameters['booleanFalse']);
-		$this->assertSame(NULL, $parameters['booleanNull']);		
+		$this->assertSame(NULL, $parameters['booleanNull']);
 	}
 
 	public function testParserTwo()
@@ -184,7 +223,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 	 * @string3 tRuE
 	 * @booleanFalse false
 	 * @booleanNull null
-	 * 
+	 *
 	 */
 	private function parserFixture()
 	{
