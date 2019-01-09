@@ -22,7 +22,7 @@ You need [PHPUnit](https://github.com/sebastianbergmann/phpunit/). After you get
 This library gives you the ability to extract and auto-parse DocBlock comment blocks.
 
 Example:
-
+```php
     class TestClass {
       /**
        * @x 1
@@ -34,6 +34,7 @@ Example:
     $reader = new \DocBlockReader\Reader('TestClass', 'myVar', 'property');
     $x = $reader->getParameter("x"); // 1 (with number type)
     $y = $reader->getParameter("y"); // "yes!" (with string type)
+ ```
 
 So as you can see to do this you need to construct `Reader` object and target it at something. Then you extract data.
 
